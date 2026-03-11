@@ -63,14 +63,14 @@
         }  
       });  
   
-      // ✅ Updated Stream URL (CricLife2)
-      const streamUrl = "https://ev-fast-mpd.starzplayarabia.com/live/eds/CricLife2/DASH/CricLife2.mpd";  
+      // ✅ Updated New Stream URL
+      const streamUrl = "https://a201aivottlinear-a.akamaihd.net/OTTB/lhr-nitro/live/clients/dash-sd/enc/yjhgnfk2sz/out/v1/3a995adfa3444f1ba12ee630365a4ffe/cenc-sd.mpd";  
       
       player.configure({  
         drm: {  
           clearKeys: {  
-            // ✅ Updated Keys (CricLife2)
-            "48bef83b4c6a3c5189b01b0126210da4": "bd085230b7b09e50954fe0af111a8a9f"  
+            // ✅ Updated New Keys
+            "1cb76f3b8bbd4b8e18d5c1a79b52395b": "dfdac30ebbfa63b4326de4ca462e9fa3"  
           }  
         },  
         manifest: {
@@ -92,7 +92,7 @@
   
       try {  
         await player.load(streamUrl);  
-        console.log("Stream successfully loaded!");  
+        console.log("Stream successfully loaded with new keys!");  
       } catch (error) {  
         console.error('Error loading stream:', error);  
       }  
