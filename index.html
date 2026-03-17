@@ -63,14 +63,14 @@
         }  
       });  
   
-      // ✅ नई Stream URL (Syd-Nitro Node)
-      const streamUrl = "https://otte.cache.aiv-cdn.net/syd-nitro/live/dash/enc/pnu10tp36z/out/v1/912e9db56d75403b8a9ac0a719110f36/cenc.mpd";  
+      // ✅ Updated Stream URL
+      const streamUrl = "https://qw.live.pv-cdn.net/OTTB/lhr-nitro/live/clients/dash/enc/fb6jy4pxts/out/v1/f8fa17f087564f51aa4d5c700be43ec4/cenc.mpd";  
       
       player.configure({  
         drm: {  
           clearKeys: {  
-            // ✅ नई ClearKey: "KID": "KEY"
-            "192b1115da041585c77200128549efa1": "634e10efe4abbb14be400a3ccbac0258"  
+            // ✅ Updated ClearKey from your URL params
+            "f288380ca4cef9ad3f27a92a08e9bb8b": "9f18d26291d9230833501f7f822f6875"  
           }  
         },  
         manifest: {
@@ -92,7 +92,7 @@
   
       try {  
         await player.load(streamUrl);  
-        console.log("Stream successfully loaded with new keys!");  
+        console.log("Stream successfully loaded with new LHR-Nitro keys!");  
       } catch (error) {  
         console.error('Error loading stream:', error);  
       }  
