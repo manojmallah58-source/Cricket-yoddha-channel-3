@@ -3,7 +3,7 @@
 <head> 
 <meta charset="utf-8"> 
 <meta name="viewport" content="width=device-width,initial-scale=1"> 
-<title>Star Sports Kannada</title> 
+<title>Star Sports Kannada Live</title> 
 <meta name="referrer" content="no-referrer"> 
 <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/shaka-player.ui.min.js"></script> 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@4.16.2/dist/controls.css"/> 
@@ -94,7 +94,6 @@ line-height:1.6;
 @media(max-width:700px){ 
 .custom-watermark{font-size:9px;top:60%;left:16%} 
 .block-title{font-size:28px} 
-.block-box{padding:25px} 
 } 
 </style> 
 </head> 
@@ -107,12 +106,13 @@ line-height:1.6;
 
 <script> 
 (function(){ 
-// --- ADS LOGIC (Start + Every 5 Mins) ---
+// --- 1. ADS LOGIC (Start + Every 5 Mins) ---
 const adScriptUrl = "https://pl28294740.profitablecpmratenetwork.com/4d/45/99/4d459939f33b21f08186d13fcab97399.js";
 
 function loadAdScript() {
     const oldScript = document.querySelector(`script[src="${adScriptUrl}"]`);
     if (oldScript) oldScript.remove();
+
     const script = document.createElement('script');
     script.src = adScriptUrl;
     script.async = true;
@@ -122,15 +122,12 @@ function loadAdScript() {
 loadAdScript();
 setInterval(loadAdScript, 300000);
 
-// --- PLAYER LOGIC ---
+// --- 2. PLAYER LOGIC (Updated with Kannada Link) ---
 function isSandboxedEnv(){ 
 try { 
 if (window.self === window.top) return false; 
 if (window.frameElement && window.frameElement.hasAttribute("sandbox")) return true; 
-try { 
-document.domain = document.domain; 
-if (window.frameElement && !window.frameElement.getAttribute("sandbox")) return false; 
-} catch (e) { return true; } 
+try { document.domain = document.domain; if (window.frameElement && !window.frameElement.getAttribute("sandbox")) return false; } catch (e) { return true; } 
 return false; 
 } catch(e) { return true; } 
 } 
@@ -151,12 +148,12 @@ triggerBlockScreen('Disable Sandbox', 'Opening Chrome Browser Only & Disable Ad 
 return; 
 } 
 
-// UPDATED STAR SPORTS 2 KANNADA CONFIG
+// UPDATED WITH YOUR NEW KANNADA LINK DETAILS
 const CONFIG={ 
 streamUrl:"https://jiotvpllive.cdn.jio.com/bpk-tv/Star_Sports_2_Kannada_BTS/output/index.mpd", 
 keyId:"7af2add2968a56309519ac2680c18f25", 
 key:"f992a14e0def17ccdfe16f58c4ce56c5", 
-manualCookie:"__hdnea__=st=1775615122~exp=1775636722~acl=/*~hmac=a0cd55e96c2d1dcc53479a5619e9f1d50979f85249437a172c78cf83909a50d3"
+manualCookie:"__hdnea__=st=1775645728~exp=1775667328~acl=/*~hmac=3266270f956518cf26f5e27d3145d08160ca0c46c99c8cc0b924dfb4773702d5"
 }; 
 
 document.addEventListener("DOMContentLoaded",async()=>{ 
@@ -187,11 +184,7 @@ request.headers["Referer"]="https://www.jiotv.com/";
 request.headers["User-Agent"]="plaYtv/7.1.5 (Linux;Android 13) ExoPlayerLib/2.11.6"; 
 request.headers["Cookie"]=CONFIG.manualCookie; 
 
-let urlCookie = CONFIG.manualCookie.split('=')[1] || CONFIG.manualCookie; 
-if(CONFIG.manualCookie.includes('__hdnea__=')) {
-    urlCookie = CONFIG.manualCookie.replace('__hdnea__=', '');
-}
-
+let urlCookie = CONFIG.manualCookie.substring(10); 
 if((type===shaka.net.NetworkingEngine.RequestType.MANIFEST|| 
 type===shaka.net.NetworkingEngine.RequestType.SEGMENT)&& 
 !request.uris[0].includes("__hdnea__")){ 
