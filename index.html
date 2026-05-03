@@ -75,15 +75,15 @@
         }  
       });  
   
-      // ✅ Naya DRM Key (Key ID:Value)
+      // ✅ UPDATED DRM Key (Key ID : Key)
       let drmConfig = {  
         clearKeys: {  
-          "dcedd692f3315f768ddb192ed266d05f": "6cf182dc2d612c127d408851c9d2e524"  
+          "24583a8b6b908fba097bbb794eabc1a8": "f8d5cacb61e361b15aa7c36a74bbe7af"  
         }  
       };  
   
-      // ✅ Naya MPD URL
-      let streamUrl = "https://dck1-ac-live.cdn.indazn.com/out/v1/761f422bb93edb7b/d3ee4c1daf714b36826fabd93c90986a/index.mpd";  
+      // ✅ UPDATED MPD URL
+      let streamUrl = "https://a96aivottlinear-a.akamaihd.net/OTTB/iad-nitro/enc/pnjtj597lg/out/v1/b4178959f9234d78bb8f32e0a675bafa/cenc.mpd";  
   
       player.configure({  
         drm: drmConfig,  
@@ -103,9 +103,6 @@
           useNativeHlsOnSafari: true  
         },  
         manifest: {  
-          dash: {
-            // Agar User-Agent headers ki zaroorat hai toh yahan configuration lagti hai
-          },
           retryParameters: {  
             timeout: 8000,  
             maxAttempts: 3  
