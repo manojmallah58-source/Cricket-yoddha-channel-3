@@ -39,7 +39,7 @@
 </head>  
 <body>  
   <div class="shaka-video-container" data-shaka-player>  
-    <video autoplay playsinline preload="metadata" poster="https://i.ibb.co/VrsnMcD/image-search-1765615733453.webp"></video>  
+    <video autoplay muted playsinline preload="metadata" poster="https://i.ibb.co/nMBMq5qL/20260602-220931.jpg"></video>  
   </div>  
   
   <script>  
@@ -75,37 +75,25 @@
         }  
       });  
   
-      // ✅ NEW DRM Key (Key ID:Value)
+      // ✅ Updated DRM Key
       let drmConfig = {  
         clearKeys: {  
-          "290e09c837da78d5cd961978d390515c": "b748836c71e6a4ca68ef5b5652db6247"  
+          "01f756322784d8acaeb5c46651ae8879": "e42f17fcb3c0f626f5001227e71b7116"  
         }  
       };  
   
-      // ✅ NEW MPD URL
-      let streamUrl = "https://otte.cache.aiv-cdn.net/bom-nitro/live/clients/dash/enc/tll6uwepxa/out/v1/a7f67cbb33df46539312956427343886/cenc.mpd";  
+      // ✅ Updated MPD URL
+      let streamUrl = "https://abkyrm4aaaaaaaameb73dmd5i5jrg.ta.bia-cf.live.pv-cdn.net/iad-nitro/live/clients/dash/enc/ejifmyjrj2/out/v1/b52eb68932084f9e9f5ec31a59e75c65/cenc.mpd";  
   
       player.configure({  
         drm: drmConfig,  
         streaming: {  
           lowLatencyMode: true,  
-          bufferingGoal: 15,  
+          bufferingGoal: 10,  
           rebufferingGoal: 2,  
-          bufferBehind: 15,  
           retryParameters: {  
             timeout: 10000,  
-            maxAttempts: 5,  
-            baseDelay: 300,  
-            backoffFactor: 1.2  
-          },  
-          segmentRequestTimeout: 8000,  
-          segmentPrefetchLimit: 2,  
-          useNativeHlsOnSafari: true  
-        },  
-        manifest: {  
-          retryParameters: {  
-            timeout: 8000,  
-            maxAttempts: 3  
+            maxAttempts: 5  
           }  
         }  
       });  
