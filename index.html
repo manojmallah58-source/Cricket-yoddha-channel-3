@@ -27,7 +27,6 @@
       background: #000;  
       object-fit: contain;  
     }  
-    /* Shaka Spinner Hiding */
     .shaka-spinner-container,  
     .shaka-spinner,  
     .shaka-spinner-svg {  
@@ -75,14 +74,14 @@
         }  
       });  
   
-      // Updated DRM Keys
+      // Fixed DRM Configuration
       let drmConfig = {  
         clearKeys: {  
           "2c60f5b5e6e8ad2d163532250859723b": "cb11a5f25b5baded086a2e7a046b9b02"  
         }  
       };  
   
-      // Updated MPD URL
+      // Updated URL
       let streamUrl = "https://otte.live.fly.ww.aiv-cdn.net/iad-nitro/live/clients/dash/enc/rk7p7dafl0/out/v1/ffc1c57edf814108953aa0992b3145ff/cenc.mpd";  
   
       player.configure({  
