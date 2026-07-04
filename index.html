@@ -7,7 +7,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">  
   <style>  
-    * { margin: 0; padding: 0; box-sizing: border-box; }  
+   * { margin: 0; padding: 0; box-sizing: border-box; }  
     html, body {  
       background: #000;  
       height: 100vh;  
@@ -27,6 +27,7 @@
       background: #000;  
       object-fit: contain;  
     }  
+    /* Shaka Spinner Hiding */
     .shaka-spinner-container,  
     .shaka-spinner,  
     .shaka-spinner-svg {  
@@ -74,15 +75,15 @@
         }  
       });  
   
-      // Updated DRM Key
+      // ✅ UPDATED DRM Key
       let drmConfig = {  
         clearKeys: {  
-          "2c60f5b5e6e8ad2d163532250859723b": "cb11a5f25b5baded086a2e7a046b9b02"  
+          "3340fb32568e2b78910762e4d7454993": "1c3bf53d188425d2e105e8b1df15236b"  
         }  
       };  
   
-      // Updated MPD URL
-      let streamUrl = "https://abkyrm4aaaaaaaamfyfksth3wr44v.ta.bia-cf.live.pv-cdn.net/iad-nitro/live/clients/dash/enc/rk7p7dafl0/out/v1/ffc1c57edf814108953aa0992b3145ff/cenc.mpd";  
+      // ✅ UPDATED MPD URL
+      let streamUrl = "https://otte.live.fly.ww.aiv-cdn.net/iad-nitro/live/clients/dash/enc/qtq2yrmgxq/out/v1/c9f90a4d66634748a5345d9f418680d2/cenc.mpd";  
   
       player.configure({  
         drm: drmConfig,  
