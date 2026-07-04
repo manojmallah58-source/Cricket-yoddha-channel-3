@@ -3,51 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prime Stream</title>
+    <title>Prime English</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { background: #000; height: 100vh; width: 100vw; overflow: hidden; }
-        .shaka-video-container { position: absolute; inset: 0; width: 100%; height: 100%; }
-        video { width: 100%; height: 100%; background: #000; object-fit: contain; }
+        html, body {
+            background: #000;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+        .shaka-video-container {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            object-fit: contain;
+        }
+        /* Hide unwanted UI elements */
+        .shaka-spinner-container, .shaka-spinner, .shaka-spinner-svg {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
 
     <div class="shaka-video-container" data-shaka-player-container>
-        <video autoplay playsinline preload="metadata" data-shaka-player></video>
+        <video autoplay playsinline preload="metadata" data-shaka-player poster="https://elamplificador.com/wp-content/uploads/2023/08/trucos-amazon-primevideo-ksrD-620x349@abc.png"></video>
     </div>
 
     <script>
-        async function initPlayer() {
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Shaka polyfill install
+            shaka.polyfill.installAll();
+
+            if (!shaka.Player.isBrowserSupported()) {
+                console.error('Browser not supported');
+                return;
+            }
+
             const video = document.querySelector('video');
-            const player = new shaka.Player();
-            await player.attach(video);
+            const player = new shaka.Player(video);
+            const container = document.querySelector('.shaka-video-container');
+            const ui = new shaka.ui.Overlay(player, container, video);
 
-            const ui = new shaka.ui.Overlay(player, document.querySelector('.shaka-video-container'), video);
+            ui.configure({
+                controlPanelElements: [
+                    'play_pause', 'time_and_duration', 'mute', 'volume',
+                    'spacer', 'language', 'captions', 'picture_in_picture',
+                    'quality', 'fullscreen'
+                ]
+            });
 
-            // DRM Config
             const drmConfig = {
                 clearKeys: {
                     "3340fb32568e2b78910762e4d7454993": "1c3bf53d188425d2e105e8b1df15236b"
                 }
             };
 
+            const streamUrl = "https://otte.live.fly.ww.aiv-cdn.net/iad-nitro/live/clients/dash/enc/qtq2yrmgxq/out/v1/c9f90a4d66634748a5345d9f418680d2/cenc.mpd";
+
             player.configure({
                 drm: drmConfig,
-                streaming: { lowLatencyMode: true }
+                streaming: {
+                    lowLatencyMode: true
+                }
             });
 
             try {
-                const streamUrl = "https://otte.live.fly.ww.aiv-cdn.net/iad-nitro/live/clients/dash/enc/qtq2yrmgxq/out/v1/c9f90a4d66634748a5345d9f418680d2/cenc.mpd";
                 await player.load(streamUrl);
-            } catch (e) {
-                console.error("Error loading stream:", e);
+                console.log("Stream loaded successfully");
+            } catch (error) {
+                console.error('Load error:', error);
             }
-        }
-
-        document.addEventListener('DOMContentLoaded', initPlayer);
+        });
     </script>
 </body>
 </html>
