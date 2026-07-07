@@ -1,50 +1,58 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Prime By Cricket Yoddha</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css">
-  <style>
-    body { background: #000; margin: 0; padding: 0; overflow: hidden; }
-    .shaka-video-container { position: absolute; inset: 0; }
-    video { width: 100%; height: 100%; }
-  </style>
-</head>
-<body>
-  <div class="shaka-video-container" data-shaka-player>
-    <video autoplay muted playsinline></video>
-  </div>
-
-  <script>
-    async function initPlayer() {
-      const video = document.querySelector('video');
-      const player = new shaka.Player(video);
-
-      // CORS bypass and headers configuration
+<!DOCTYPE html>  
+<html>  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>Prime By Cricket Yoddha</title>     
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">  
+  <style>  
+    * { margin: 0; padding: 0; box-sizing: border-box; }  
+    html, body { background: #000; height: 100vh; width: 100vw; overflow: hidden; font-family: system-ui, -apple-system, sans-serif; }  
+    .shaka-video-container { position: absolute; inset: 0; width: 100%; height: 100%; }  
+    video { width: 100%; height: 100%; background: #000; object-fit: contain; }  
+    .shaka-spinner-container, .shaka-spinner, .shaka-spinner-svg { display: none !important; }  
+  </style>  
+</head>  
+<body>  
+  <div class="shaka-video-container" data-shaka-player>  
+    <video autoplay muted playsinline preload="metadata" poster="https://i.ibb.co/nMBMq5qL/20260602-220931.jpg"></video>  
+  </div>  
+  
+  <script>  
+    document.addEventListener('DOMContentLoaded', async () => {  
+      const video = document.querySelector('video');  
+      const player = new shaka.Player(video);  
+      
+      // ✅ CORS aur Header Security Fix
       player.getNetworkingEngine().registerRequestFilter((type, request) => {
         request.allowCrossSiteCredentials = true;
-        request.headers['Origin'] = 'https://www.amazon.com'; // Spoofing origin for some CDNs
+        request.headers['Origin'] = 'https://www.amazon.com'; 
       });
 
-      player.configure({
-        drm: {
-          clearKeys: {
-            "632b06f50e561ccfc3473ae057177d70": "1fd0877cfa85e2617ab00f14b4fb66fe"
-          }
-        },
-        streaming: { lowLatencyMode: true }
-      });
-
-      try {
-        await player.load("https://otte.live.fly.ww.aiv-cdn.net/iad-nitro/live/clients/dash/enc/tcgcz1g3fk/out/v1/33a4bce588914c258fd9300022b50846/cenc.mpd");
-        console.log("Stream loaded successfully!");
-      } catch (e) {
-        console.error("Error code: " + e.code);
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', initPlayer);
-  </script>
-</body>
+      const container = document.querySelector('.shaka-video-container');  
+      const ui = new shaka.ui.Overlay(player, container, video);  
+  
+      ui.configure({  
+        controlPanelElements: ['play_pause', 'time_and_duration', 'mute', 'volume', 'spacer', 'language', 'captions', 'picture_in_picture', 'quality', 'fullscreen'],  
+        volumeBarColors: { base: 'rgba(255, 192, 203, 0.3)', level: 'rgb(255, 105, 180)' },  
+        seekBarColors: { base: 'rgba(255, 255, 0, 0.3)', buffered: 'rgba(255, 255, 0, 0.6)', played: 'rgb(255, 255, 0)' }  
+      });  
+  
+      player.configure({  
+        drm: {  
+          clearKeys: { "632b06f50e561ccfc3473ae057177d70": "1fd0877cfa85e2617ab00f14b4fb66fe" }  
+        },  
+        streaming: { lowLatencyMode: true, bufferingGoal: 10, rebufferingGoal: 2 }  
+      });  
+  
+      try {  
+        await player.load("https://otte.live.fly.ww.aiv-cdn.net/iad-nitro/live/clients/dash/enc/tcgcz1g3fk/out/v1/33a4bce588914c258fd9300022b50846/cenc.mpd");  
+        console.log("Stream loaded successfully");  
+      } catch (error) {  
+        console.error('Load error:', error);  
+      }  
+    });  
+  </script>  
+</body>  
 </html>
