@@ -1,58 +1,91 @@
-<!DOCTYPE html>  
-<html>  
-<head>  
-  <meta charset="UTF-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-  <title>Prime By Cricket Yoddha</title>     
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">  
-  <style>  
-    * { margin: 0; padding: 0; box-sizing: border-box; }  
-    html, body { background: #000; height: 100vh; width: 100vw; overflow: hidden; font-family: system-ui, -apple-system, sans-serif; }  
-    .shaka-video-container { position: absolute; inset: 0; width: 100%; height: 100%; }  
-    video { width: 100%; height: 100%; background: #000; object-fit: contain; }  
-    .shaka-spinner-container, .shaka-spinner, .shaka-spinner-svg { display: none !important; }  
-  </style>  
-</head>  
-<body>  
-  <div class="shaka-video-container" data-shaka-player>  
-    <video autoplay muted playsinline preload="metadata" poster="https://i.ibb.co/nMBMq5qL/20260602-220931.jpg"></video>  
-  </div>  
-  
-  <script>  
-    document.addEventListener('DOMContentLoaded', async () => {  
-      const video = document.querySelector('video');  
-      const player = new shaka.Player(video);  
-      
-      // ✅ CORS aur Header Security Fix
-      player.getNetworkingEngine().registerRequestFilter((type, request) => {
-        request.allowCrossSiteCredentials = true;
-        request.headers['Origin'] = 'https://www.amazon.com'; 
-      });
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="referrer" content="no-referrer">
+    <title>Sonu // Live Stream</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shaka-player@5.1.8/dist/controls.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { 
+            width: 100%; height: 100%; background: #000; overflow: hidden; 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            user-select: none; -webkit-tap-highlight-color: transparent;
+        }
 
-      const container = document.querySelector('.shaka-video-container');  
-      const ui = new shaka.ui.Overlay(player, container, video);  
-  
-      ui.configure({  
-        controlPanelElements: ['play_pause', 'time_and_duration', 'mute', 'volume', 'spacer', 'language', 'captions', 'picture_in_picture', 'quality', 'fullscreen'],  
-        volumeBarColors: { base: 'rgba(255, 192, 203, 0.3)', level: 'rgb(255, 105, 180)' },  
-        seekBarColors: { base: 'rgba(255, 255, 0, 0.3)', buffered: 'rgba(255, 255, 0, 0.6)', played: 'rgb(255, 255, 0)' }  
-      });  
-  
-      player.configure({  
-        drm: {  
-          clearKeys: { "632b06f50e561ccfc3473ae057177d70": "1fd0877cfa85e2617ab00f14b4fb66fe" }  
-        },  
-        streaming: { lowLatencyMode: true, bufferingGoal: 10, rebufferingGoal: 2 }  
-      });  
-  
-      try {  
-        await player.load("https://otte.live.fly.ww.aiv-cdn.net/iad-nitro/live/clients/dash/enc/tcgcz1g3fk/out/v1/33a4bce588914c258fd9300022b50846/cenc.mpd");  
-        console.log("Stream loaded successfully");  
-      } catch (error) {  
-        console.error('Load error:', error);  
-      }  
-    });  
-  </script>  
-</body>  
+        .shaka-video-container { 
+            position: fixed; inset: 0; background: #000; 
+            display: flex; align-items: center; justify-content: center; 
+        }
+
+        video { width: 100%; height: 100%; object-fit: contain; background: #000; }
+        video.mode-fill { object-fit: fill; }
+        video.mode-cover { object-fit: cover; }
+
+        /* Custom Styles for Loader and UI */
+        .shaka-spinner-container, .shaka-spinner { display: none !important; }
+        
+        #loader { 
+            position: absolute; inset: 0; background: rgba(0,0,0,.55); 
+            display: flex; align-items: center; justify-content: center; 
+            z-index: 9; opacity: 0; pointer-events: none; transition: opacity .2s;
+        }
+        #loader.on { opacity: 1; }
+        .spin { 
+            width: 36px; height: 36px; border: 3px solid rgba(255,255,255,.15); 
+            border-top-color: #38bdf8; border-radius: 50%; animation: sp .75s linear infinite; 
+        }
+        @keyframes sp { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="shaka-video-container" id="pc">
+        <video id="v" autoplay playsinline preload="metadata"></video>
+        <div id="loader"><div class="spin"></div></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/shaka-player@5.1.8/dist/shaka-player.ui.min.js"></script>
+    <script>
+        const STREAM_URL = 'https://otte.live.fly.ww.aiv-cdn.net/iad-nitro/live/clients/dash/enc/gd4z224xdp/out/v1/9e38543f588e448d9bb7dbffbf570551/cenc.mpd';
+        const RAW_KEYS = '56b9f0dcdbf57830aa1701189521cf50:46f50ef66ce6c6602e8d019890457d45';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!shaka.Player.isBrowserSupported()) return;
+
+            const video = document.getElementById('v');
+            const container = document.getElementById('pc');
+            const loader = document.getElementById('loader');
+            
+            const player = new shaka.Player();
+            await player.attach(video);
+
+            // Configure Player & DRM
+            const clearKeys = Object.fromEntries(RAW_KEYS.split(',').map(pair => pair.trim().split(':')));
+            
+            player.configure({
+                drm: { clearKeys },
+                abr: { enabled: true, defaultBandwidthEstimate: 2000000 }
+            });
+
+            // Network Filter for headers
+            player.getNetworkingEngine().registerRequestFilter((type, request) => {
+                request.headers['Referer'] = 'https://www.cricbuzz.com/';
+                request.headers['User-Agent'] = 'Mozilla/5.0 (Linux; Android 10; SM-G973F)...';
+            });
+
+            // UI Setup
+            const ui = new shaka.ui.Overlay(player, container, video);
+            ui.configure({
+                controlPanelElements: ['play_pause','time_and_duration','spacer','quality','fullscreen','overflow_menu'],
+                seekBarColors: { base:'rgba(209,213,219,.25)', buffered:'rgba(139,0,0,.45)', played:'#22c55e' }
+            });
+
+            try { await player.load(STREAM_URL); } catch (e) { console.error("Error loading stream", e); }
+        });
+    </script>
+</body>
 </html>
