@@ -25,7 +25,6 @@
         video.mode-fill { object-fit: fill; }
         video.mode-cover { object-fit: cover; }
 
-        /* Custom Styles for Loader and UI */
         .shaka-spinner-container, .shaka-spinner { display: none !important; }
         
         #loader { 
@@ -50,6 +49,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/shaka-player@5.1.8/dist/shaka-player.ui.min.js"></script>
     <script>
+        // Updated Stream URL and Keys
         const STREAM_URL = 'https://otte.live.fly.ww.aiv-cdn.net/iad-nitro/live/clients/dash/enc/tcgcz1g3fk/out/v1/33a4bce588914c258fd9300022b50846/cenc.mpd';
         const RAW_KEYS = '632b06f50e561ccfc3473ae057177d70:1fd0877cfa85e2617ab00f14b4fb66fe';
 
@@ -58,13 +58,13 @@
 
             const video = document.getElementById('v');
             const container = document.getElementById('pc');
-            const loader = document.getElementById('loader');
-            
             const player = new shaka.Player();
             await player.attach(video);
 
-            // Configure Player & DRM
-            const clearKeys = Object.fromEntries(RAW_KEYS.split(',').map(pair => pair.trim().split(':')));
+            // Configure Player & DRM using the provided keys
+            const clearKeys = {
+                '632b06f50e561ccfc3473ae057177d70': '1fd0877cfa85e2617ab00f14b4fb66fe'
+            };
             
             player.configure({
                 drm: { clearKeys },
@@ -74,7 +74,7 @@
             // Network Filter for headers
             player.getNetworkingEngine().registerRequestFilter((type, request) => {
                 request.headers['Referer'] = 'https://www.cricbuzz.com/';
-                request.headers['User-Agent'] = 'Mozilla/5.0 (Linux; Android 10; SM-G973F)...';
+                request.headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
             });
 
             // UI Setup
@@ -84,7 +84,11 @@
                 seekBarColors: { base:'rgba(209,213,219,.25)', buffered:'rgba(139,0,0,.45)', played:'#22c55e' }
             });
 
-            try { await player.load(STREAM_URL); } catch (e) { console.error("Error loading stream", e); }
+            try { 
+                await player.load(STREAM_URL); 
+            } catch (e) { 
+                console.error("Error loading stream", e); 
+            }
         });
     </script>
 </body>
