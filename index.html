@@ -1,180 +1,204 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sony Sports Ten 3 Hindi HD</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/shaka-player.ui.min.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.11/controls.min.css" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Fox 501 · Plyr</title>
+    <!-- Plyr CSS (v3.7.8) -->
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* reset & fullscreen bedrock */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         html, body {
-            background: #000;
-            height: 100vh;
-            width: 100vw;
+            width: 100%;
+            height: 100%;
+            background: #0b0b0b;
             overflow: hidden;
-            font-family: system-ui, -apple-system, sans-serif;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
         }
-        .shaka-video-container {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-        }
-        video {
-            width: 100%;
-            height: 100%;
-            background: #000;
-            object-fit: contain;
-        }
-        .shaka-spinner-container,
-        .shaka-spinner,
-        .shaka-spinner-svg {
-            display: none !important;
-            visibility: hidden !important;
-            opacity: 0 !important;
-        }
-        /* Screenshot Button Styling */
-        .screenshot-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            z-index: 1000;
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
+        .player-wrapper {
+            width: 100vw;
+            height: 100vh;
+            max-width: 100%;
+            max-height: 100%;
             display: flex;
             align-items: center;
-            gap: 6px;
-            backdrop-filter: blur(4px);
-            transition: background 0.2s;
+            justify-content: center;
+            background: #000;
         }
-        .screenshot-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+        #foxPlayer {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            background: #000;
+        }
+        .plyr--video {
+            background: #000;
+        }
+        /* ===== PREMIUM RED PROGRESS BAR ===== */
+        .plyr__progress__buffer,
+        .plyr__progress__buffer::-webkit-progress-bar {
+            background: rgba(255, 255, 255, 0.15) !important;
+        }
+        .plyr__progress__played,
+        .plyr__progress__played::-webkit-progress-value {
+            background: #e50914 !important;
+            background-image: linear-gradient(135deg, #ff1a1a, #cc0000) !important;
+            box-shadow: 0 0 12px #e50914aa, 0 0 4px #ff4d4d80 !important;
+            transition: background 0.1s ease;
+        }
+        .plyr__progress__thumb {
+            background: #e50914 !important;
+            box-shadow: 0 0 16px #e50914, 0 0 6px #ff6666 !important;
+            border: 2px solid #fff !important;
+            transition: box-shadow 0.2s;
+        }
+        .plyr__progress__thumb:hover {
+            box-shadow: 0 0 24px #ff3333, 0 0 12px #ff9999 !important;
+        }
+        .plyr__volume input[type="range"]::-webkit-slider-runnable-track,
+        .plyr__volume input[type="range"]::-moz-range-track {
+            background: rgba(255,255,255,0.2) !important;
+        }
+        .plyr__volume input[type="range"]::-webkit-slider-thumb {
+            background: #e50914 !important;
+            box-shadow: 0 0 8px #e50914 !important;
+        }
+        .player-wrapper video {
+            object-fit: contain;
+            background: #000;
+        }
+        .plyr__control[aria-pressed="true"] {
+            background: #e50914 !important;
+        }
+        .plyr__control:hover {
+            background: #e50914 !important;
+        }
+        .plyr__progress input[type="range"]::-webkit-slider-runnable-track {
+            background: rgba(255,255,255,0.2) !important;
+        }
+        .plyr__progress input[type="range"]::-webkit-slider-thumb {
+            background: #e50914 !important;
+            box-shadow: 0 0 20px #e50914cc !important;
+        }
+        .plyr__progress input[type="range"]::-moz-range-thumb {
+            background: #e50914 !important;
+            border: 2px solid white !important;
+            box-shadow: 0 0 16px #e50914 !important;
+        }
+        .plyr__progress input[type="range"]::-moz-range-progress {
+            background: #e50914 !important;
+        }
+        .plyr__menu__container .plyr__control[role="menuitem"] .plyr__menu__value {
+            color: #fff !important;
         }
     </style>
 </head>
 <body>
-    <div class="shaka-video-container" data-shaka-player>
-        <button class="screenshot-btn" id="screenshotBtn" title="Take Screenshot">📷 Screenshot</button>
-        <video autoplay playsinline preload="metadata" poster=""></video>
+    <div class="player-wrapper">
+        <video id="foxPlayer" playsinline crossorigin>
+            <source src="https://live.talkoraai.com/match/hls?t=FQjDTu8uG8F0Iym9ra8qBN7PFujm6MZgnpuHCKtW8TmqFST6HV6suP9lx4gADOcTPJUN_cKuoxJVq_w8xAGiRXz0t-u99TtviVfuzZB3YsmPcXnZFeV0FSvb5iT6exg9Aln8_iV-eVAOH-H-aZrcxufxzVzYSDfBo_hMxwkTtp2UV8DJsGY0glLHRvVqNHI1wAYmIxuoydybdIZlr7LzCKtFO0cCZlG_xc1ZkbMxHWzraaaiD2z8qcTC8NQ5sPBtxZs1r6uhfVXltfq8G6xDdBm03kWuEA" type="application/vnd.apple.mpegurl" />
+            <p>Your browser does not support HLS. Please use a modern browser.</p>
+        </video>
     </div>
-
+    
+    <!-- Plyr JS + HLS -->
+    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@0.14.17/dist/hls.min.js"></script>
+    
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            shaka.polyfill.installAll();
-
-            if (!shaka.Player.isBrowserSupported()) {
-                console.error('Browser not supported');
-                return;
-            }
-
-            const video = document.querySelector('video');
-            const player = new shaka.Player();
-            await player.attach(video);
-
-            const container = document.querySelector('.shaka-video-container');
-            const ui = new shaka.ui.Overlay(player, container, video);
-
-            ui.configure({
-                controlPanelElements: [
-                    'play_pause', 'time_and_duration', 'mute', 'volume',
-                    'spacer', 'language', 'captions', 'picture_in_picture',
-                    'quality', 'fullscreen'
-                ],
-                volumeBarColors: { base: 'purple', level: 'purple' },
-                seekBarColors: { base: 'white', buffered: 'red', played: 'blue' }
-            });
-
-            // Stream URL and DRM Configuration
-            let streamUrl = "https://jiotvpllive.cdn.jio.com/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/index.mpd?__hdnea__=st=1784867425~exp=1784889025~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=6c5da9d89cc6a9559d708bc4c4bf4234bff9c8fdae0ab239bc0fb801c06b4399";
+        (function() {
+            const video = document.getElementById('foxPlayer');
+            const streamUrl = 'https://live.talkoraai.com/match/hls?t=FQjDTu8uG8F0Iym9ra8qBN7PFujm6MZgnpuHCKtW8TmqFST6HV6suP9lx4gADOcTPJUN_cKuoxJVq_w8xAGiRXz0t-u99TtviVfuzZB3YsmPcXnZFeV0FSvb5iT6exg9Aln8_iV-eVAOH-H-aZrcxufxzVzYSDfBo_hMxwkTtp2UV8DJsGY0glLHRvVqNHI1wAYmIxuoydybdIZlr7LzCKtFO0cCZlG_xc1ZkbMxHWzraaaiD2z8qcTC8NQ5sPBtxZs1r6uhfVXltfq8G6xDdBm03kWuEA';
             
-            let drmConfig = {
-                clearKeys: {
-                    "08638117638b55649c6befa7f5cb34f6": "58ddb6bbdf8d8b1e2aac2b5312e99086"
-                }
-            };
-            
-            let cookieHeader = "__hdnea__=st=1784867425~exp=1784889025~acl=/bpk-tv/SonySportsTen3HinHDSTB_BTS/WDVLive/*~hmac=6c5da9d89cc6a9559d708bc4c4bf4234bff9c8fdae0ab239bc0fb801c06b4399";
-
-            player.configure({
-                drm: drmConfig,
-                streaming: {
+            if (Hls.isSupported()) {
+                const hls = new Hls({
+                    enableWorker: true,
                     lowLatencyMode: true,
-                    bufferingGoal: 15,
-                    rebufferingGoal: 2,
-                    bufferBehind: 15,
-                    retryParameters: {
-                        timeout: 10000,
-                        maxAttempts: 5,
-                        baseDelay: 300,
-                        backoffFactor: 1.2
+                });
+                hls.loadSource(streamUrl);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    video.play().catch(e => console.warn('Autoplay prevented:', e));
+                });
+                hls.on(Hls.Events.ERROR, function (event, data) {
+                    if (data.fatal) {
+                        switch (data.type) {
+                            case Hls.ErrorTypes.NETWORK_ERROR:
+                                hls.startLoad();
+                                break;
+                            case Hls.ErrorTypes.MEDIA_ERROR:
+                                hls.recoverMediaError();
+                                break;
+                            default:
+                                break;
+                        }
                     }
-                }
-            });
-
-            player.getNetworkingEngine().registerRequestFilter((type, request) => {
-                request.headers['Referer'] = 'https://www.jiotv.com/';
-                request.headers['User-Agent'] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
-                request.headers['Cookie'] = cookieHeader;
-
-                if ((type === shaka.net.NetworkingEngine.RequestType.MANIFEST || 
-                     type === shaka.net.NetworkingEngine.RequestType.SEGMENT) && 
-                    request.uris[0] && !request.uris[0].includes('__hdnea=')) {
-                    const separator = request.uris[0].includes('?') ? '&' : '?';
-                    request.uris[0] += separator + cookieHeader;
-                }
-            });
-
-            // Screenshot Functionality
-            const screenshotBtn = document.getElementById('screenshotBtn');
-            screenshotBtn.addEventListener('click', () => {
-                const canvas = document.createElement('canvas');
-                canvas.width = video.videoWidth || 1280;
-                canvas.height = video.videoHeight || 720;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                
-                const dataURL = canvas.toDataURL('image/png');
-                const a = document.createElement('a');
-                a.href = dataURL;
-                a.download = 'screenshot_' + new Date().toISOString().slice(0, 19).replace(/[:T]/g, '_') + '.png';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            });
-
-            const attemptAutoplay = async () => {
-                try {
-                    video.muted = false;
-                    await video.play();
-                } catch (error) {
-                    video.muted = true;
-                    await video.play();
-                }
-            };
-
-            player.addEventListener('error', (event) => console.error('Shaka Player Error:', event.detail));
-
-            try {
-                await player.load(streamUrl);
-                if (video.readyState >= 3) {
-                    await attemptAutoplay();
-                } else {
-                    video.addEventListener('canplay', attemptAutoplay, { once: true });
-                }
-            } catch (error) {
-                console.error('Load error:', error);
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = streamUrl;
+                video.addEventListener('loadedmetadata', function() {
+                    video.play().catch(e => console.warn('Autoplay blocked:', e));
+                });
+            } else {
+                console.warn('HLS not supported');
             }
 
-            ['click', 'touchstart'].forEach(event => {
-                document.addEventListener(event, () => { if(video.muted) video.muted = false; }, { once: true });
+            const player = new Plyr(video, {
+                controls: [
+                    'play-large', 'play', 'progress', 'current-time', 
+                    'duration', 'mute', 'volume', 'settings', 'fullscreen'
+                ],
+                quality: {
+                    default: 0,
+                    options: [1080, 720, 540, 480, 360, 240],
+                    forced: false,
+                    onChange: (quality) => {}
+                },
+                i18n: {
+                    play: 'Play', pause: 'Pause', mute: 'Mute', unmute: 'Unmute',
+                    settings: 'Settings', enterFullscreen: 'Fullscreen',
+                    exitFullscreen: 'Exit fullscreen', speed: 'Speed',
+                    normal: 'Normal', quality: 'Quality', loop: 'Loop',
+                },
+                logo: false,
+                tooltips: false,
+                keyboard: true,
+                autoplay: true,
+                blankVideo: '',
+                hideControls: false,
+                resetOnEnd: false,
+                ratio: '16:9',
+                fullscreen: { enabled: true, fallback: true },
+                storage: { enabled: false },
             });
-        });
+
+            const container = player.elements.container;
+            if (container) {
+                container.style.width = '100%';
+                container.style.height = '100%';
+            }
+
+            window.addEventListener('resize', function() {
+                if (player) {
+                    player.elements.container.style.width = '100%';
+                    player.elements.container.style.height = '100%';
+                }
+            });
+
+            window.player = player;
+
+            if (Hls.isSupported()) {
+                const hlsInstance = video.hlsInstance || hls;
+                window.hlsInstance = hlsInstance;
+                hlsInstance.on(Hls.Events.LEVEL_SWITCHED, function(event, data) {});
+            }
+        })();
     </script>
 </body>
 </html>
